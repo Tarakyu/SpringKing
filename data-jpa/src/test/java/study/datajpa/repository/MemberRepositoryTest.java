@@ -10,6 +10,7 @@ import study.datajpa.entity.Team;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -141,5 +142,25 @@ class MemberRepositoryTest {
 
         List<Member> result = memberRepository.findByNames(Arrays.asList("AAA", "BBB"));
         assertThat(result.size()).isEqualTo(2);
+    }
+
+    @Test
+    public void testReturnType() {
+        Member m1 = new Member("AAA", 10);
+        Member m2 = new Member("BBB", 20);
+        Member m3 = new Member("AAA", 30);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+        memberRepository.save(m3);
+
+        List<Member> resultList = memberRepository.findListByUsername("CCC");
+        System.out.println("resultList = " + resultList); // empty list
+        Member resultMember = memberRepository.findMemberByUsername("CCC");
+        System.out.println("resultMember = " + resultMember); // null
+//        Member resultMember2 = memberRepository.findMemberByUsername("AAA"); // IncorrectResultSizeDataAccessException
+        Optional<Member> resultOptional = memberRepository.findOptionalByUsername("CCC");
+        System.out.println("resultOptional = " + resultOptional); // Optional.empty
+
+
     }
 }
