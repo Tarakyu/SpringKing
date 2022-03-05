@@ -214,4 +214,29 @@ class MemberRepositoryTest {
         assertThat(resultCount).isEqualTo(3);
         assertThat(member5.getAge()).isEqualTo(51);
     }
+    
+    @Test
+    public void queryHint() {
+        Member member = memberRepository.save(new Member("member1", 10));
+        Long memberId = member.getId();
+        em.flush();
+        em.clear();
+
+        Member findMember = memberRepository.findReadOnlyByUsername("member1");
+        findMember.setUsername("member2");
+        em.flush();
+        em.clear();
+
+        Member updatedMember = memberRepository.findById(memberId).get();
+        assertThat(updatedMember.getUsername()).isEqualTo("member1");
+    }
+
+    @Test
+    public void lock() {
+        Member member1 = memberRepository.save(new Member("member1", 10));
+        em.flush();
+        em.clear();
+
+        List<Member> result = memberRepository.findLockByUsername("member1");
+    }
 }
