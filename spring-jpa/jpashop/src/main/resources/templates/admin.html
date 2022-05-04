@@ -1,0 +1,10 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="container">
+    <div th:each="class : ${list}">
+        <td th:text="${class}"></td>
+    </div>
+</div>
+</body>
+</html>
